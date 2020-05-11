@@ -1,0 +1,182 @@
+﻿<UserControl x:Class="EquityTrading.Client.Views.OrderBookMasterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EquityTrading.Client.Views"
+             xmlns:models="clr-namespace:EquityTrading.Client.Models"
+             xmlns:converters="clr-namespace:EquityTrading.Client.Converters"
+             xmlns:utils="clr-namespace:EquityTrading.Client.Utils"
+             xmlns:ns="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="typeProvider" MethodName="GetValues" ObjectType="{x:Type ns:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:OrderType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="scripProvider" MethodName="GetValues" ObjectType="{x:Type ns:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:Scrip"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <converters:OrderDataConverter x:Key="orderConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="7*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+            <Button Content="Send bulk buy orders" Width="180" Margin="10,5,10,0" Command="{Binding SendBuyOrdersCommand}"/>
+            <Button Content="Send bulk sell orders" Width="180" Margin="10,5,10,0" Command="{Binding SendSellOrdersCommand}"/>
+        </StackPanel>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding UserName, StringFormat='Welcome, {0}'}" Margin="0,20,0,0" HorizontalAlignment="Center" FontFamily="Arial Rounded MT Bold" FontSize="40" Foreground="#FF8BC34A"/>
+        <ToggleButton Grid.Column="0" Grid.Row="1" Margin="0,5,0,0"  Width="100" Content="Create ↓" HorizontalAlignment="Center" IsChecked="{Binding IsCreateElapsed}" Foreground="#DDFFFFFF" FontFamily="Arial Rounded MT Bold" FontSize="20">
+            <ToggleButton.Triggers>
+                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                    <BeginStoryboard>
+                        <Storyboard x:Name="HideStackPanel">
+                            <DoubleAnimation Storyboard.TargetName="stackCreateOrderPanel" Storyboard.TargetProperty="Height" From="150" To="0" Duration="0:0:0.3">
+                                <DoubleAnimation.EasingFunction>
+                                    <PowerEase EasingMode="EaseIn"></PowerEase>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Create ↓"  />
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="ToggleButton.Checked">
+                    <BeginStoryboard>
+                        <Storyboard x:Name="ShowStackPanel">
+                            <DoubleAnimation Storyboard.TargetName="stackCreateOrderPanel" Storyboard.TargetProperty="Height" From="0" To="150" Duration="0:0:0.3">
+                                <DoubleAnimation.EasingFunction>
+                                    <PowerEase EasingMode="EaseIn"></PowerEase>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Create ↑"  />
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </ToggleButton.Triggers>
+            <ToggleButton.Template>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid>
+                        <Button/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                </ControlTemplate>
+            </ToggleButton.Template>
+        </ToggleButton>
+        <ToggleButton Grid.Column="1" Grid.Row="1" Width="250" Content="View My Tradebook ↓" HorizontalAlignment="Center" Foreground="#DDFFFFFF" FontFamily="Arial Rounded MT Bold" FontSize="20">
+            <ToggleButton.Triggers>
+                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                    <BeginStoryboard>
+                        <Storyboard x:Name="HideTradeStackPanel">
+                            <DoubleAnimation Storyboard.TargetName="stackViewTradesPanel" Storyboard.TargetProperty="Height" From="1000" To="0" Duration="0:0:0.3">
+                                <DoubleAnimation.EasingFunction>
+                                    <PowerEase EasingMode="EaseIn"></PowerEase>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="View My Tradebook ↓"  />
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="ToggleButton.Checked">
+                    <BeginStoryboard>
+                        <Storyboard x:Name="ShowTradeStackPanel">
+                            <DoubleAnimation Storyboard.TargetName="stackViewTradesPanel" Storyboard.TargetProperty="Height" From="0" To="1000" Duration="0:0:0.3">
+                                <DoubleAnimation.EasingFunction>
+                                    <PowerEase EasingMode="EaseIn"></PowerEase>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="View My Tradebook ↑"  />
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </ToggleButton.Triggers>
+            <ToggleButton.Template>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid>
+                        <Button/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                </ControlTemplate>
+            </ToggleButton.Template>
+        </ToggleButton>
+        <StackPanel Grid.Row="2" Grid.Column="0" Width="300" Height="0" x:Name="stackCreateOrderPanel" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,0,0,28">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Symbol" Grid.Row="0" Grid.Column="0" FontFamily="Arial Rounded MT Bold" FontSize="15"/>
+                <ComboBox Background="#FF8BC34A" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Source={StaticResource scripProvider}}" SelectedItem="{Binding CurrentOrder.Symbol}"/>
+                <Label Content="Buy/Sell" Grid.Row="1" Grid.Column="0" FontFamily="Arial Rounded MT Bold" FontSize="15"/>
+                <ComboBox Background="#FF8BC34A" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Source={StaticResource typeProvider}}" SelectedItem="{Binding CurrentOrder.Type}"/>
+                <Label Content="Quantity" Grid.Row="2" Grid.Column="0" FontFamily="Arial Rounded MT Bold" FontSize="15"/>
+                <TextBox Foreground="#FF8BC34A" Grid.Row="2" Grid.Column="1" Text="{Binding CurrentOrder.Quantity,Converter={StaticResource orderConverter}}" FontSize="15"/>
+                <Label Content="Price" Grid.Row="3" Grid.Column="0" FontFamily="Arial Rounded MT Bold" FontSize="15"/>
+                <TextBox Foreground="#FF8BC34A" Grid.Row="3" Grid.Column="1" Text="{Binding CurrentOrder.Price,Converter={StaticResource orderConverter}}" FontSize="15"/>
+                <Button Content="Place Limit Order" Foreground="White" Grid.Row="4" Grid.ColumnSpan="2" Command="{Binding SaveOrderCommand}"/>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" Height="0" x:Name="stackViewTradesPanel" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,0,0,28">
+            <DataGrid IsReadOnly="True" Margin="20,30,20,20" ItemsSource="{Binding OrderBook}" utils:DataGridExtension.HideAnnotatedColumns="True" VerticalAlignment="Stretch"/>
+        </StackPanel>
+        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+            <StackPanel Orientation="Vertical">
+                <Label Content="MARKET DEPTH " Margin="20,0,20,0" FontFamily="Arial Rounded MT Bold" FontSize="20" />
+                <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <Border BorderBrush="Black" BorderThickness="1">
+                                <TextBlock Text="Buy"
+                                           Background="#FF8BC34A"
+                                           Foreground="White"
+                                           FontSize="20"
+                                           FontWeight="SemiBold"
+                                           TextAlignment="Center"
+                                           DockPanel.Dock="Top" />
+                            </Border>
+                        <DataGrid ItemsSource="{Binding BidDepth}" IsReadOnly="True" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Border BorderBrush="Black" BorderThickness="1">
+                                <TextBlock Text="Sell"
+                                           Background="#FF8BC34A"
+                                           Foreground="White"
+                                           FontSize="20"
+                                           FontWeight="SemiBold"
+                                           TextAlignment="Center"
+                                           DockPanel.Dock="Top" 
+                                           />
+                            </Border>
+                        <DataGrid ItemsSource="{Binding AskDepth}" IsReadOnly="True" />
+                        </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

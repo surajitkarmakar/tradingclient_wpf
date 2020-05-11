@@ -1,0 +1,1 @@
+# WPF MVVM based trading client application which gets the realtime data from SignalR based C# trading server application.

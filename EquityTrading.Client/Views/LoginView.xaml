@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="EquityTrading.Client.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:EquityTrading.Client.Views"
+             mc:Ignorable="d"              
+             d:DesignHeight="400" d:DesignWidth="600">
+    <Grid FocusManager.FocusedElement="{Binding ElementName=UsernameTxtBox}">
+        <Label Content="Trading System designed and developed by Surajit Karmakar" HorizontalAlignment="Center" FontFamily="Century Gothic" FontSize="20" Margin="0,30,0,0"/>
+        <materialDesign:Card VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Height="280">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Content="LOGIN" FontSize="30" HorizontalAlignment="Center" FontFamily="Arial Rounded MT Bold"/>
+                <Border Grid.Row="1" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="0,1,0,0">
+                    <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center"
+                                VerticalAlignment="Top" Margin="0,10,0,0">
+                        <TextBox x:Name="UsernameTxtBox" Width="150" Margin="0,5"
+                                 materialDesign:HintAssist.Hint="Username"  Foreground="White"
+                                 Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}">
+                            <TextBox.InputBindings>
+                                <KeyBinding Command="{Binding LoginCommand}" Key="Return"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <Button Content="Login" Margin="0,10,0,0" Command="{Binding LoginCommand}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>
