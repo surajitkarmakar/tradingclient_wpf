@@ -144,7 +144,7 @@
             </Grid>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" Height="0" x:Name="stackViewTradesPanel" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,0,0,28">
-            <DataGrid IsReadOnly="True" Margin="20,30,20,20" ItemsSource="{Binding OrderBook}" utils:DataGridExtension.HideAnnotatedColumns="True" VerticalAlignment="Stretch"/>
+            <DataGrid MaxWidth="700" MaxHeight="450" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" IsReadOnly="True" Margin="20,30,20,20" ItemsSource="{Binding OrderBook}" utils:DataGridExtension.HideAnnotatedColumns="True" />
         </StackPanel>
         <Grid Grid.Row="3" Grid.ColumnSpan="2">
             <StackPanel Orientation="Vertical">
